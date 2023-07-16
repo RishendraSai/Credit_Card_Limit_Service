@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: Credit Cards Apis
+  description:  Credit Cards Apis
+  version: 1.0.1
+servers:
+  - url: http://localhost:8085/cards
+    description: Local machine
+paths:
+  /accounts:
+    post:
+      tags:
+        - Accounts
+      description: Create Credit card account
+      operationId: addAccount
+      requestBody:
+        description:  add account details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAccountRequest'
+      responses:
+        '200':
+          description: Bank payments processing response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Account creation request not found
+        '500':
+          description: Internal server error
+  /accounts/{accountId}:
+    get:
+      tags:
+        - Accounts
+      description: Get User details by Account Id
+      operationId: getUserDetails
+      parameters:
+        - name: accountId
+          in: path
+          description: account Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User Details Search response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description:  User Details not Found
+
+  /offer:
+    post:
+      tags:
+        - Offers
+      description: Create Offer For Credit Card Account
+      operationId: addOffer
+      requestBody:
+        description:  add Offers for account details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOfferRequest'
+      responses:
+        '200':
+          description: Bank payments processing response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferResponse'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Account creation request not found
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - Offers
+      description: Get Offer details by offer Id
+      operationId: getOfferDetails
+      parameters:
+        - name: accountId
+          in: query
+          description: account Id
+          required: true
+          schema:
+            type: string
+        - name: activeDate
+          in: query
+          description: Active Date
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offer Details Search response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDetailsResponse'
+        '404':
+          description:  Offer Details not Found
+  /offer/{offerId}:
+    put:
+      tags:
+        - Offers
+      description: Update Offer details by Account Id
+      operationId: updateOffer
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update Offer Details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOfferRequest'
+      responses:
+        '200':
+          description: Update Offer Details response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferResponse'
+        '404':
+          description:  User Details not Found
+
+components:
+  schemas:
+    AddAccountRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        status:
+          type: string
+        account:
+          $ref: '#/components/schemas/AccountDataResponse'
+
+    AccountDataResponse:
+      type: object
+      properties:
+        account_id:
+          type: string
+        amountLimit:
+          type: integer
+        perTransactionLimit:
+          type: integer
+
+    AddOfferRequest:
+      type: object
+      properties:
+        accountId:
+          type: string
+        limitType:
+          type: string
+        newLimit:
+          type: string
+        offerActivationTime:
+          type: string
+          format: date-time
+        offerExpiryTime:
+          type: string
+          format: date-time
+    OfferResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+        limitType:
+          type: string
+        newLimit:
+          type: string
+        offerActivationTime:
+          type: string
+          format: date-time
+        offerExpiryTime:
+          type: string
+          format: date-time
+        offerId:
+          type: integer
+        status:
+          type: string
+    OfferDetailsResponse:
+      type: object
+      properties:
+        offerDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferResponse'
+    UpdateOfferRequest:
+      type: object
+      properties:
+        status:
+          type: string
+
+
+
+
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errorDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+    ErrorDetail:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        field:
+          type: string
