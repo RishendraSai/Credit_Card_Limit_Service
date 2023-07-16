@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "734564f4-53cf-4aaf-aaaf-112661f0d986",
+		"name": "CreditCardService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28342109"
+	},
+	"item": [
+		{
+			"name": "Get Account Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8085/cards/v1/accounts/"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Rishi\",\r\n  \"phone\": \"1234567890\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8085/cards/v1/accounts"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Offer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountId\": \"\",\r\n  \"limitType\": \"\",\r\n  \"newLimit\": \"\",\r\n  \"offerActivationTime\": \"2023-07-16T08:42:12.534Z\",\r\n  \"offerExpiryTime\": \"2023-07-16T08:42:12.534Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8085/cards/offer"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Offer Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/cards/offer?accountId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"cards",
+						"offer"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Offer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\" :\" ACCEPTED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8085/cards/offer/8"
+			},
+			"response": []
+		}
+	]
+}
